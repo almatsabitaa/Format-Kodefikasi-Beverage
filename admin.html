@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Beverage</title>
+</head>
+<body>
+    <div class="header-bar">
+        <h1>QA Beverage</h1>
+        <p><a href="index.html" class="back-link">← Kembali ke Kalkulator</a></p>
+    </div>
+
+    <div id="loginContainer" class="main-container">
+        <div class="card login-card">
+            <h2>Login Admin</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required placeholder="Masukkan Username Anda">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Masukkan Password Anda">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+                <p id="loginMessage" class="error-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminContent" class="main-container">
+        
+        <div class="admin-controls">
+            <button type="button" id="logoutButton" class="btn btn-warning">Logout</button>
+        </div>
+        
+        <div class="card add-card">
+            <h2>Tambah Produk Baru</h2>
+            <form id="addProductForm">
+                <div class="form-grid">
+                    <label for="newSku">SKU:</label>
+                    <input type="text" id="newSku" required placeholder="Contoh: NTR1">
+
+                    <label for="newKemasan">Jenis Kemasan:</label>
+                    <input type="text" id="newKemasan" required placeholder="Contoh: PET / PAPER PACK">
+
+                    <label for="newShelfLife">Shelf Life (Bulan):</label>
+                    <input type="number" id="newShelfLife" required placeholder="Contoh: 12 atau 13">
+
+                    <label for="newKodeProduk">Kode Produk (2 Huruf):</label>
+                    <input type="text" id="newKodeProduk" maxlength="2" required placeholder="Contoh: TO">
+                    
+                    <div class="full-width">
+                        <button type="submit" class="btn btn-success">Tambah Produk</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div id="editContainer" class="card edit-card" style="display:none;">
+            <h3>Edit Produk (ID: <span id="editProductId"></span>)</h3>
+            <form id="editProductForm">
+    <input type="hidden" id="editId">
+    <div class="form-grid">
+        <label for="editSku">SKU:</label>
+        <input type="text" id="editSku" required>
+
+        <label for="editKemasan">Jenis Kemasan:</label>
+        <input type="text" id="editKemasan" required>
+
+        <label for="editShelfLife">Shelf Life (Bulan):</label>
+        <input type="number" id="editShelfLife" required>
+
+        <label for="editKodeProduk">Kode Produk:</label>
+        <input type="text" id="editKodeProduk" maxlength="2" required>
+        
+        <div class="full-width">
+            </div>
+    </div>
+</form>
+        </div>
+
+        <div class="card table-card">
+            <h2>Daftar Produk Saat Ini</h2>
+            <table id="productTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>SKU</th>
+                        <th>Jenis Kemasan</th>
+                        <th>Shelf Life (Bulan)</th>
+                        <th>Kode Produk</th>
+                        <th class="action-cell">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    
+    <style>
+        :root {
+            --primary: #dc3545; /* Merah Khas Admin/Peringatan */
+            --secondary: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #007bff;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --danger: #dc3545;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--light);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+
+        /* Container utama untuk menengahkan konten */
+        .main-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+
+        /* Header Bar */
+        .header-bar {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 24px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        h3 {
+            color: var(--info);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        a.back-link {
+            color: var(--info);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- CARD STYLE --- */
+        .card {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        .login-card {
+            max-width: 400px;
+            margin: 50px auto;
+        }
+        .edit-card {
+            background-color: #fff3e0; /* Warna soft kuning untuk menandakan mode edit */
+            border: 1px solid #ffcc80;
+        }
+
+        /* --- FORM STYLING --- */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #444;
+        }
+        input[type="text"], input[type="number"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: var(--info);
+            outline: none;
+        }
+        
+        /* Layout Grid untuk Form Tambah/Edit - KOREKSI FINAL UNTUK MERAPIKAN TAMPILAN */
+.form-grid {
+    display: grid;
+    /* Lebar label 160px, lebar input menggunakan sisa ruang */
+    grid-template-columns: 160px 1fr; 
+    gap: 10px;
+    align-items: center;
+}
+
+/* Membuat label rata kanan dan terpisah dari input */
+.form-grid label {
+    font-weight: 600;
+    text-align: right; /* Membuat label rata kanan */
+    padding-right: 10px;
+}
+
+.form-grid .full-width {
+    grid-column: 1 / span 2;
+    padding-top: 10px;
+    /* Menggeser tombol agar sejajar dengan kolom input (160px + 10px gap) */
+    padding-left: 170px; 
+}
+        /* --- END KOREKSI FORM GRID --- */
+
+        /* --- BUTTON STYLING --- */
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background-color 0.3s, opacity 0.3s;
+            margin-right: 10px;
+        }
+        .btn-primary { background-color: var(--info); color: var(--white); }
+        .btn-secondary { background-color: var(--secondary); color: var(--white); }
+        .btn-success { background-color: var(--success); color: var(--white); }
+        .btn-warning { background-color: var(--warning); color: #333; }
+        .btn:hover { opacity: 0.9; }
+
+        /* Admin Controls (Logout Button) */
+        .admin-controls {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+        /* --- TABLE STYLING --- */
+        #productTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #productTable th, #productTable td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        #productTable th {
+            background-color: #e9ecef;
+            color: #495057;
+            font-weight: 700;
+        }
+        #productTable tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .action-cell {
+            width: 160px;
+            text-align: center;
+        }
+        .action-cell button {
+            margin: 2px;
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+        .action-cell .edit-button {
+            background-color: var(--info); 
+            color: var(--white);
+        }
+        .action-cell button[onclick*="deleteProduct"] {
+            background-color: var(--danger); 
+            color: var(--white);
+        }
+
+        /* Pesan Error */
+        .error-message {
+            color: var(--danger);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        /* PENTING: Sembunyikan konten admin secara default */
+        #adminContent { display: none; } 
+    </style>
+</body>
+</html>
