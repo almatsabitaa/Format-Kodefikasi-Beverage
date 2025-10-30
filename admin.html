@@ -50,7 +50,7 @@
                     <label for="newShelfLife">Shelf Life (Bulan):</label>
                     <input type="number" id="newShelfLife" required placeholder="Contoh: 12 atau 13">
 
-                    <label for="newKodeProduk">Kode Produk (2 Huruf):</label>
+                    <label for="newKodeProduk">Kode Produk:</label>
                     <input type="text" id="newKodeProduk" maxlength="2" required placeholder="Contoh: TO">
                     
                     <div class="full-width">
@@ -61,27 +61,30 @@
         </div>
         
         <div id="editContainer" class="card edit-card" style="display:none;">
-            <h3>Edit Produk (ID: <span id="editProductId"></span>)</h3>
-            <form id="editProductForm">
-    <input type="hidden" id="editId">
-    <div class="form-grid">
-        <label for="editSku">SKU:</label>
-        <input type="text" id="editSku" required>
+    <h3>Edit Produk (ID: <span id="editProductId"></span>)</h3>
+    <form id="editProductForm">
+        <input type="hidden" id="editId">
+        <div class="form-grid">
+            <label for="editSku">SKU:</label>
+            <input type="text" id="editSku" required>
 
-        <label for="editKemasan">Jenis Kemasan:</label>
-        <input type="text" id="editKemasan" required>
+            <label for="editKemasan">Jenis Kemasan:</label>
+            <input type="text" id="editKemasan" required>
 
-        <label for="editShelfLife">Shelf Life (Bulan):</label>
-        <input type="number" id="editShelfLife" required>
+            <label for="editShelfLife">Shelf Life (Bulan):</label>
+            <input type="number" id="editShelfLife" required>
 
-        <label for="editKodeProduk">Kode Produk:</label>
-        <input type="text" id="editKodeProduk" maxlength="2" required>
-        
-        <div class="full-width">
+            <label for="editKodeProduk">Kode Produk:</label>
+            <input type="text" id="editKodeProduk" maxlength="2" required>
+            
+            <div class="full-width">
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                
+                <button type="button" id="cancelEditButton" class="btn btn-secondary">Batal</button>
             </div>
-    </div>
-</form>
-        </div>
+            </div>
+    </form>
+</div>
 
         <div class="card table-card">
             <h2>Daftar Produk Saat Ini</h2>
@@ -106,7 +109,7 @@
     
     <style>
         :root {
-            --primary: #dc3545; /* Merah Khas Admin/Peringatan */
+            --primary: #dc3545;
             --secondary: #6c757d;
             --success: #28a745;
             --warning: #ffc107;
@@ -126,14 +129,12 @@
             padding: 30px;
         }
 
-        /* Container utama untuk menengahkan konten */
         .main-container {
             width: 100%;
             max-width: 1000px;
             margin: 20px auto;
         }
 
-        /* Header Bar */
         .header-bar {
             width: 100%;
             max-width: 1000px;
@@ -171,7 +172,6 @@
             text-decoration: underline;
         }
 
-        /* --- CARD STYLE --- */
         .card {
             background-color: var(--white);
             padding: 25px;
@@ -184,11 +184,10 @@
             margin: 50px auto;
         }
         .edit-card {
-            background-color: #fff3e0; /* Warna soft kuning untuk menandakan mode edit */
+            background-color: #fff3e0;
             border: 1px solid #ffcc80;
         }
 
-        /* --- FORM STYLING --- */
         .form-group {
             margin-bottom: 15px;
         }
@@ -211,31 +210,25 @@
             outline: none;
         }
         
-        /* Layout Grid untuk Form Tambah/Edit - KOREKSI FINAL UNTUK MERAPIKAN TAMPILAN */
 .form-grid {
     display: grid;
-    /* Lebar label 160px, lebar input menggunakan sisa ruang */
     grid-template-columns: 160px 1fr; 
     gap: 10px;
     align-items: center;
 }
 
-/* Membuat label rata kanan dan terpisah dari input */
 .form-grid label {
     font-weight: 600;
-    text-align: right; /* Membuat label rata kanan */
+    text-align: right;
     padding-right: 10px;
 }
 
 .form-grid .full-width {
     grid-column: 1 / span 2;
     padding-top: 10px;
-    /* Menggeser tombol agar sejajar dengan kolom input (160px + 10px gap) */
     padding-left: 170px; 
 }
-        /* --- END KOREKSI FORM GRID --- */
 
-        /* --- BUTTON STYLING --- */
         .btn {
             padding: 10px 18px;
             border: none;
@@ -252,13 +245,11 @@
         .btn-warning { background-color: var(--warning); color: #333; }
         .btn:hover { opacity: 0.9; }
 
-        /* Admin Controls (Logout Button) */
         .admin-controls {
             text-align: right;
             margin-bottom: 20px;
         }
         
-        /* --- TABLE STYLING --- */
         #productTable {
             width: 100%;
             border-collapse: collapse;
@@ -294,14 +285,12 @@
             color: var(--white);
         }
 
-        /* Pesan Error */
         .error-message {
             color: var(--danger);
             font-weight: 600;
             margin-top: 10px;
         }
         
-        /* PENTING: Sembunyikan konten admin secara default */
         #adminContent { display: none; } 
     </style>
 </body>

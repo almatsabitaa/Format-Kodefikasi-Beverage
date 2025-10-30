@@ -6,20 +6,14 @@ const loginContainer = document.getElementById('loginContainer');
 const adminContent = document.getElementById('adminContent');
 const loginMessage = document.getElementById('loginMessage');
 
-// VARIABEL BARU UNTUK EDIT
 const editContainer = document.getElementById('editContainer');
 const editProductForm = document.getElementById('editProductForm');
 const editIdInput = document.getElementById('editId');
 const editProductIdSpan = document.getElementById('editProductId');
 const cancelEditButton = document.getElementById('cancelEditButton');
 
-const API_BASE_URL = 'https://qa-beverage-api.onrender.com/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
-// =========================================================
-// OTENTIKASI (LOGIN/LOGOUT)
-// =========================================================
-
-// (Fungsi checkLoginStatus, showAdminContent, showLoginForm, Handler LOGIN, Handler LOGOUT TIDAK BERUBAH)
 function checkLoginStatus() {
     const token = localStorage.getItem('authToken');
     if (token) {
@@ -76,12 +70,6 @@ logoutButton.addEventListener('click', () => {
     showLoginForm();
 });
 
-
-// =========================================================
-// FUNGSI CRUD PRODUK
-// =========================================================
-
-// --- 1. FUNGSI UNTUK MENAMPILKAN DATA (READ) ---
 function renderProducts(products) {
     productTableBody.innerHTML = '';
     products.forEach(product => {
@@ -96,14 +84,12 @@ function renderProducts(products) {
         const actionCell = row.insertCell();
         actionCell.classList.add('action-cell');
         
-        // Tombol EDIT
         const editButton = document.createElement('button');
         editButton.textContent = 'Edit';
         editButton.classList.add('edit-button');
         editButton.onclick = () => showEditForm(product);
         actionCell.appendChild(editButton);
         
-        // Tombol HAPUS
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Hapus';
         deleteButton.style.backgroundColor = 'salmon';
@@ -113,9 +99,7 @@ function renderProducts(products) {
     });
 }
 
-// --- 2. FUNGSI UNTUK MENGAMBIL DATA DARI API ---
 async function fetchAndRenderProducts() {
-    // Pastikan form edit tersembunyi saat reload data
     editContainer.style.display = 'none'; 
     
     try {
@@ -140,7 +124,6 @@ async function fetchAndRenderProducts() {
     }
 }
 
-// --- 3. FUNGSI UNTUK MENAMBAH DATA BARU (CREATE) ---
 addProductForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -176,7 +159,6 @@ addProductForm.addEventListener('submit', async (e) => {
     }
 });
 
-// --- 4. FUNGSI UNTUK MENGHAPUS DATA (DELETE) ---
 async function deleteProduct(id, sku) {
     if (!confirm(`Yakin ingin menghapus produk SKU ${sku} (ID: ${id})?`)) {
         return;
@@ -199,11 +181,6 @@ async function deleteProduct(id, sku) {
     }
 }
 
-// =========================================================
-// FUNGSI EDIT/UPDATE
-// =========================================================
-
-// Menampilkan form edit dengan data yang dipilih
 function showEditForm(product) {
     editIdInput.value = product.id;
     editProductIdSpan.textContent = product.id;
@@ -213,15 +190,13 @@ function showEditForm(product) {
     document.getElementById('editKodeProduk').value = product.kode_produk;
     
     editContainer.style.display = 'block';
-    window.scrollTo(0, 0); // Gulir ke atas agar form terlihat
+    window.scrollTo(0, 0);
 }
 
-// Menyembunyikan form edit
 cancelEditButton.addEventListener('click', () => {
     editContainer.style.display = 'none';
 });
 
-// Handler saat form edit disubmit (UPDATE)
 editProductForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -235,7 +210,7 @@ editProductForm.addEventListener('submit', async (e) => {
 
     try {
         const response = await fetch(`${API_BASE_URL}/products/${id}`, {
-            method: 'PUT', // Menggunakan metode PUT
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedProduct)
         });
@@ -250,7 +225,7 @@ editProductForm.addEventListener('submit', async (e) => {
         } else {
             alert(`Produk ID ${id} berhasil diperbarui!`);
             editContainer.style.display = 'none';
-            fetchAndRenderProducts(); // Muat ulang tabel
+            fetchAndRenderProducts();
         }
     } catch (error) {
         console.error('Error saat memperbarui produk:', error);
@@ -259,5 +234,4 @@ editProductForm.addEventListener('submit', async (e) => {
 });
 
 
-// --- INITIAL LOAD: CEK STATUS LOGIN SAAT HALAMAN DIMUAT ---
 document.addEventListener('DOMContentLoaded', checkLoginStatus);
